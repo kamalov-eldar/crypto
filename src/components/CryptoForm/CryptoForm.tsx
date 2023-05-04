@@ -1,9 +1,23 @@
 import { Stack, MenuItem, FormControl, InputLabel } from "@mui/material"
 import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import { TCoin } from "../../types";
+import CurrenciesStore from "../../stores/currenciesStore";
+import { observer } from "mobx-react-lite";
 
-export const CryptoForm: FC = () => {
+/* export type CryptoFormProps = {
+  coins: TCoin[];
+} */
+
+export const CryptoForm: FC = observer(() => {
+  //console.log('CryptoForm: ');
+  /*  useEffect(() => {
+     CurrenciesStore.fetchCoins();
+   }, []); */
+  const coins = CurrenciesStore.items
+
+  const coinsName = coins.map(item => item.name)
 
   return (
     <Stack direction={'row'} spacing={0.5} sx={{ justifyContent: 'space-between' }}>
@@ -12,18 +26,16 @@ export const CryptoForm: FC = () => {
           label="Сумма"
         />
       </FormControl>
-      <FormControl >
-        <InputLabel >Валюта</InputLabel>
+      <FormControl>
+        <InputLabel>Валюта</InputLabel>
         <Select
           value={10}
           label="Валюта"
           sx={{ width: '85px' }}
         //onChange={handleChange}
         >
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {coinsName.map(name => <MenuItem value={name}>{name}</MenuItem>)}
         </Select>
       </FormControl>
     </Stack>)
-}
+})

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Paper } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,12 +7,28 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { TCoin } from '../../types';
+import { observer } from 'mobx-react-lite';
+import CurrenciesStore from "../../stores/currenciesStore";
 
-export type TableCryptoProps = {
-  coins: TCoin[] | null;
-}
+/* export type TableCryptoProps = {
+  coins: TCoin[];
+} */
 
-export const TableCrypto: FC<TableCryptoProps> = ({ coins }) => {
+export const TableCrypto: FC = observer(() => {
+ // console.log('TableCrypto: ');
+
+  /* useEffect(() => {
+    CurrenciesStore.fetchCoins();
+  }, []); */
+  useEffect(() => {
+    CurrenciesStore.fetchCoins();
+    setInterval(() => CurrenciesStore.fetchCoins(), 60000);
+  }, [])
+
+  const coins = CurrenciesStore.items
+  const diffObj = CurrenciesStore.diffObj
+  console.log('diffObj: ', JSON.stringify(diffObj));
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -34,11 +50,12 @@ export const TableCrypto: FC<TableCryptoProps> = ({ coins }) => {
               <TableCell align="left" component="th" scope="row"><img style={{ width: '25px' }} src={coin.imageUrl} alt="" /> </TableCell>
               <TableCell align="left" component="th" scope="row">{coin.name}</TableCell>
               <TableCell align="left">{coin.fullName}</TableCell>
-              <TableCell align="left">{coin.price}</TableCell>
+              <TableCell align="left" sx={{ backgroundColor: `${diffObj[coin.name]}` }}>{coin.price}</TableCell>
               <TableCell align="left">{coin.volume24hour}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>)
-}
+})
+
