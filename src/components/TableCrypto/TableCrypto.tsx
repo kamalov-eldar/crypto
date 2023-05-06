@@ -9,13 +9,14 @@ import TableRow from '@mui/material/TableRow';
 import { TCoin } from '../../types';
 import { observer } from 'mobx-react-lite';
 import CurrenciesStore from "../../stores/currenciesStore";
+import ConverterStore from '../../stores/converterStore';
 
 /* export type TableCryptoProps = {
   coins: TCoin[];
 } */
 
 export const TableCrypto: FC = observer(() => {
- // console.log('TableCrypto: ');
+  // console.log('TableCrypto: ');
 
   /* useEffect(() => {
     CurrenciesStore.fetchCoins();
@@ -27,7 +28,7 @@ export const TableCrypto: FC = observer(() => {
 
   const coins = CurrenciesStore.items
   const diffObj = CurrenciesStore.diffObj
-  console.log('diffObj: ', JSON.stringify(diffObj));
+  //console.log('diffObj: ', JSON.stringify(diffObj));
 
   return (
     <TableContainer component={Paper}>
@@ -44,8 +45,13 @@ export const TableCrypto: FC = observer(() => {
         <TableBody>
           {coins && coins.map((coin) => (
             <TableRow
+              hover
               key={coin.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              sx={{
+                cursor: 'pointer',
+                '&:last-child td, &:last-child th': { border: 0 }
+              }}
+            // onClick={() => ConverterStore.setSelectedCoin1(coin)}
             >
               <TableCell align="left" component="th" scope="row"><img style={{ width: '25px' }} src={coin.imageUrl} alt="" /> </TableCell>
               <TableCell align="left" component="th" scope="row">{coin.name}</TableCell>

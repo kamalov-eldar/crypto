@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { setInterval } from 'timers';
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'light' ? '#cfe8fc' : '#fff',
+  //backgroundColor: theme.palette.mode === 'light' ? '#cfe8fc' : '#fff',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -41,7 +41,7 @@ function App() {
             <TableCrypto /* coins={coins} */ />
           </Grid>
           <Grid item xs={6} md={4}>
-            <Item sx={{ bgcolor: '#cfe8fc' }} elevation={3} >
+            <Item elevation={3} >
               <CryptoForm /* coins={coins} */></CryptoForm>
             </Item>
           </Grid>

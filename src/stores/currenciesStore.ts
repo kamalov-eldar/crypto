@@ -23,13 +23,16 @@ class CurrenciesStore {
     ///@action
 
     setItems = (items: TCoin[]): void => {
-        this.diffObj = this.diffCoins(this.items, items).reduce((initObj: TCoinDiff, obj: TCoin) => {
-            const newObj: TCoin = items.find((item) => item.name === obj.name) || obj;
-            const oldObj: TCoin = this.items.find((itemObj) => itemObj.name === newObj.name) || newObj;
-            const color: string = newObj.price === oldObj.price ? '' : newObj.price > oldObj.price ? '#3d9400' : '#A11B0A';
-            initObj[newObj.name] = color;
-            return initObj;
-        }, {});
+        this.diffObj =
+            this.diffPriceCoins(this.items, items).length === 0
+                ? (this.diffObj = this.diffObj)
+                : this.diffPriceCoins(this.items, items).reduce((initObj: TCoinDiff, obj: TCoin) => {
+                      const newObj: TCoin = items.find((item) => item.name === obj.name) || obj;
+                      const oldObj: TCoin = this.items.find((itemObj) => itemObj.name === newObj.name) || newObj;
+                      const color: string = newObj.price === oldObj.price ? '' : newObj.price > oldObj.price ? '#3d9400' : '#A11B0A';
+                      initObj[newObj.name] = color;
+                      return initObj;
+                  }, {});
         this.items = items;
     };
     fetchCoins() {
@@ -51,7 +54,7 @@ class CurrenciesStore {
         });
     }
 
-    diffCoins(arr1: TCoin[], arr2: TCoin[]) {
+    diffPriceCoins(arr1: TCoin[], arr2: TCoin[]) {
         return arr1.filter((item, index) => item.price !== arr2[index].price);
     }
 }
