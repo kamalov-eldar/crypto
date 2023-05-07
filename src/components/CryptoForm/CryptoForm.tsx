@@ -7,19 +7,13 @@ import CurrenciesStore from "../../stores/currenciesStore";
 import { observer } from "mobx-react-lite";
 import ConverterStore from '../../stores/converterStore';
 
-/* export type CryptoFormProps = {
-  coins: TCoin[];
-} */
 
 export const CryptoForm: FC = observer(() => {
-  //console.log('CryptoForm: ');
-  /*  useEffect(() => {
-     CurrenciesStore.fetchCoins();
-   }, []); */
+
   const [value1, setValue1] = useState<number>(0);
   const [value2, setValue2] = useState<number>(0);
-  console.log('value2: ', value2);
-  console.log('value1: ', value1);
+  //console.log('value2: ', value2);
+  //console.log('value1: ', value1);
 
   const coins = CurrenciesStore.items;
 
@@ -31,7 +25,7 @@ export const CryptoForm: FC = observer(() => {
     const findCoinSelect2 = coins.find(item => item.name === ConverterStore.selectCoin2.name);
 
     if (value2) { ConverterStore.setQuantity2(value2); }
-
+    ConverterStore.setQuantity1(0);
     if (findCoinSelect1) { ConverterStore.setSelectedCoin1(findCoinSelect1); }
     if (findCoinSelect2) { ConverterStore.setSelectedCoin2(findCoinSelect2); }
 
@@ -43,9 +37,9 @@ export const CryptoForm: FC = observer(() => {
 
     const findCoinSelect2 = coins.find(item => item.name === selectCoinName);
     const findCoinSelect1 = coins.find(item => item.name === ConverterStore.selectCoin1.name);
-    // console.log('findCoinSelect1: ', JSON.stringify(findCoinSelect1?.price));
 
     if (value1) { ConverterStore.setQuantity1(value1); }
+    ConverterStore.setQuantity2(0);
 
 
     if (findCoinSelect2) { ConverterStore.setSelectedCoin2(findCoinSelect2); }
@@ -73,31 +67,28 @@ export const CryptoForm: FC = observer(() => {
   }
 
   useEffect(() => {
-    if (ConverterStore.quantity1) {
-      // setVolume1(ConverterStore.quantity1);
-    }
     if (ConverterStore.volume1) {
       setValue1(ConverterStore.volume1);
     }
   }, [ConverterStore.volume1]);
-  //console.log('ConverterStore.volume1: ', ConverterStore.volume1);
 
   useEffect(() => {
-    if (ConverterStore.quantity2) {
-      // setVolume2(ConverterStore.quantity2);
-    }
     if (ConverterStore.volume2) {
       setValue2(ConverterStore.volume2);
     }
   }, [ConverterStore.volume2])
-  //console.log('ConverterStore.volume2: ', ConverterStore.volume2);
 
 
   return (
     <Stack direction={'column'} spacing={3}>
-      <Stack direction={'row'} spacing={0.5} sx={{ justifyContent: 'space-between' }}>
+      <Stack direction={'row'} spacing={0.5} sx={{
+        justifyContent: 'space-between',
+        border: ' 1px solid #0000003b',
+        borderRadius: '6px'
+      }}>
         <FormControl sx={{ width: '265px' }}>
           <TextField
+            //variant="standard"
             type='number'
             name='Volume1'
             label={"Количество"}
@@ -112,6 +103,9 @@ export const CryptoForm: FC = observer(() => {
                   WebkitAppearance: 'none',
                   margin: 0
                 }
+              },
+              '& .MuiOutlinedInput-notchedOutline': {
+                border: 'none'
               }
             }}
             InputLabelProps={{
@@ -179,5 +173,5 @@ export const CryptoForm: FC = observer(() => {
           </Select>
         </FormControl>
       </Stack >
-    </Stack>)
+    </Stack >)
 })

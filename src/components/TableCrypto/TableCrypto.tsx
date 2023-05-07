@@ -11,28 +11,22 @@ import { observer } from 'mobx-react-lite';
 import CurrenciesStore from "../../stores/currenciesStore";
 import ConverterStore from '../../stores/converterStore';
 
-/* export type TableCryptoProps = {
-  coins: TCoin[];
-} */
 
 export const TableCrypto: FC = observer(() => {
   // console.log('TableCrypto: ');
 
-  /* useEffect(() => {
-    CurrenciesStore.fetchCoins();
-  }, []); */
+
   useEffect(() => {
     CurrenciesStore.fetchCoins();
-    setInterval(() => CurrenciesStore.fetchCoins(), 60000);
+    //setInterval(() => CurrenciesStore.fetchCoins(), 60000);
   }, [])
 
   const coins = CurrenciesStore.items
   const diffObj = CurrenciesStore.diffObj
-  //console.log('diffObj: ', JSON.stringify(diffObj));
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} elevation={3}>
+      <Table stickyHeader sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
             <TableCell></TableCell>
