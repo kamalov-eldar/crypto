@@ -6,7 +6,7 @@ import { TCoin } from "../../types";
 import CurrenciesStore from "../../stores/currenciesStore";
 import { observer } from "mobx-react-lite";
 import ConverterStore from '../../stores/converterStore';
-import { StyledSelect, StyledTextField } from "./styles";
+import { StyledInputBox, StyledSelect, StyledTextField } from "./styles";
 import Divider from '@mui/material/Divider';
 
 export const CryptoForm: FC = observer(() => {
@@ -81,11 +81,12 @@ export const CryptoForm: FC = observer(() => {
 
 
   return (
-    <Stack direction={'column'} spacing={3}>
-      <Stack direction={'row'} >
+    <Stack direction={'column'} spacing={2}>
+      <StyledInputBox >
         <FormControl sx={{ width: '260px', marginRight: '-1px' }}>
           <StyledTextField
             //variant="standard"
+            className="StyledTextField"
             variant="outlined"
             type='number'
             name='Volume1'
@@ -104,6 +105,7 @@ export const CryptoForm: FC = observer(() => {
         <FormControl>
           <InputLabel>Валюта</InputLabel>
           <StyledSelect
+            className="Select"
             value={ConverterStore.selectCoin1.name || ''}
             name='Volume1'
             label={"Валюта"}
@@ -118,10 +120,12 @@ export const CryptoForm: FC = observer(() => {
             {coins.map(coin => <MenuItem key={coin.id} value={coin.name}>{coin.name}</MenuItem>)}
           </StyledSelect>
         </FormControl>
-      </Stack >
-      <Stack direction={'row'} sx={{ minWidth: '360px' }}>
+      </StyledInputBox >
+      <StyledInputBox sx={{ minWidth: '360px' }}>
         <FormControl sx={{ width: '260px', marginRight: '-1px' }}>
           <StyledTextField
+            className="StyledTextField"
+
             variant="outlined"
             type='number'
             name='Volume2'
@@ -140,6 +144,7 @@ export const CryptoForm: FC = observer(() => {
         <FormControl>
           <InputLabel>Валюта</InputLabel>
           <StyledSelect
+            className="Select"
             name='Volume2'
             value={ConverterStore.selectCoin2.name || ''}
             label={"Валюта"}
@@ -154,6 +159,6 @@ export const CryptoForm: FC = observer(() => {
             {coins.map(coin => <MenuItem key={coin.id} value={coin.name}>{coin.name}</MenuItem>)}
           </StyledSelect>
         </FormControl>
-      </Stack >
+      </StyledInputBox >
     </Stack >)
 })
