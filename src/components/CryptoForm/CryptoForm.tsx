@@ -1,12 +1,13 @@
 import { Stack, MenuItem, FormControl, InputLabel, Box } from "@mui/material"
 import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { FC, useEffect, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { TCoin } from "../../types";
 import CurrenciesStore from "../../stores/currenciesStore";
 import { observer } from "mobx-react-lite";
 import ConverterStore from '../../stores/converterStore';
-
+import { StyledSelect, StyledTextField } from "./styles";
+import Divider from '@mui/material/Divider';
 
 export const CryptoForm: FC = observer(() => {
 
@@ -17,7 +18,7 @@ export const CryptoForm: FC = observer(() => {
 
   const coins = CurrenciesStore.items;
 
-  const handleSelectCoin1 = (e: SelectChangeEvent<string>) => {
+  const handleSelectCoin1 = (e: SelectChangeEvent<unknown>) => {
     const selectName = e.target.value;
     const name = e.target.name;
 
@@ -31,7 +32,7 @@ export const CryptoForm: FC = observer(() => {
 
     ConverterStore.setVolume1();
   }
-  const handleSelectCoin2 = (e: SelectChangeEvent<string>) => {
+  const handleSelectCoin2 = (e: SelectChangeEvent<unknown>) => {
     const selectCoinName = e.target.value;
     const name = e.target.name;
 
@@ -81,14 +82,11 @@ export const CryptoForm: FC = observer(() => {
 
   return (
     <Stack direction={'column'} spacing={3}>
-      <Stack direction={'row'} spacing={0.5} sx={{
-        justifyContent: 'space-between',
-        border: ' 1px solid #0000003b',
-        borderRadius: '6px'
-      }}>
-        <FormControl sx={{ width: '265px' }}>
-          <TextField
+      <Stack direction={'row'} >
+        <FormControl sx={{ width: '260px', marginRight: '-1px' }}>
+          <StyledTextField
             //variant="standard"
+            variant="outlined"
             type='number'
             name='Volume1'
             label={"Количество"}
@@ -97,30 +95,20 @@ export const CryptoForm: FC = observer(() => {
               name: e.target.name,
               value: Number(e.target.value)
             })}
-            sx={{
-              '& .MuiInputBase-input': {
-                '::-webkit-inner-spin-button, ::-webkit-outer-spin-button': {
-                  WebkitAppearance: 'none',
-                  margin: 0
-                }
-              },
-              '& .MuiOutlinedInput-notchedOutline': {
-                border: 'none'
-              }
-            }}
-            InputLabelProps={{
-              shrink: !!value1,
-            }}
+          /* InputLabelProps={{
+            shrink: !!value1,
+          }} */
           />
         </FormControl>
+        <Divider orientation="vertical" flexItem sx={{ margin: '10px 0' }} />
         <FormControl>
           <InputLabel>Валюта</InputLabel>
-          <Select
+          <StyledSelect
             value={ConverterStore.selectCoin1.name || ''}
             name='Volume1'
             label={"Валюта"}
             sx={{
-              width: '85px',
+              width: '100px',
               '& .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input': {
                 overflow: 'inherit'
               }
@@ -128,12 +116,13 @@ export const CryptoForm: FC = observer(() => {
             onChange={(e) => handleSelectCoin1(e)}
           >
             {coins.map(coin => <MenuItem key={coin.id} value={coin.name}>{coin.name}</MenuItem>)}
-          </Select>
+          </StyledSelect>
         </FormControl>
       </Stack >
-      <Stack direction={'row'} spacing={0.5} sx={{ justifyContent: 'space-between' }}>
-        <FormControl sx={{ width: '265px' }}>
-          <TextField
+      <Stack direction={'row'} sx={{ minWidth: '360px' }}>
+        <FormControl sx={{ width: '260px', marginRight: '-1px' }}>
+          <StyledTextField
+            variant="outlined"
             type='number'
             name='Volume2'
             label="Количество"
@@ -142,27 +131,20 @@ export const CryptoForm: FC = observer(() => {
               name: e.target.name,
               value: Number(e.target.value)
             })}
-            sx={{
-              '& .MuiInputBase-input': {
-                '::-webkit-inner-spin-button, ::-webkit-outer-spin-button': {
-                  WebkitAppearance: 'none',
-                  margin: 0
-                }
-              }
-            }}
-            InputLabelProps={{
-              shrink: !!value2,
-            }}
+          /*  InputLabelProps={{
+             shrink: !!value2,
+           }} */
           />
         </FormControl>
+        <Divider orientation="vertical" flexItem sx={{ margin: '10px 0' }} />
         <FormControl>
           <InputLabel>Валюта</InputLabel>
-          <Select
+          <StyledSelect
             name='Volume2'
             value={ConverterStore.selectCoin2.name || ''}
             label={"Валюта"}
             sx={{
-              width: '85px',
+              width: '100px',
               '& .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input': {
                 overflow: 'inherit'
               }
@@ -170,7 +152,7 @@ export const CryptoForm: FC = observer(() => {
             onChange={(e) => handleSelectCoin2(e)}
           >
             {coins.map(coin => <MenuItem key={coin.id} value={coin.name}>{coin.name}</MenuItem>)}
-          </Select>
+          </StyledSelect>
         </FormControl>
       </Stack >
     </Stack >)

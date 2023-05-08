@@ -1,12 +1,54 @@
 import styled from 'styled-components';
-import { Box } from '@mui/material';
+import { Box, TextField, Select, Stack } from '@mui/material';
 
-export const StyledContainerForm = styled(Box)`
-    padding: 20px 20px 40px 50px;
+export const StyledTextField = styled(TextField)`
+    & .MuiInputBase-input {
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
 
-    width: 1860px;
-    /* max-width: 1860px;
-  min-width: 1675px;
-  width: 100%;
-  */
+    & .MuiOutlinedInput-notchedOutline {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .MuiOutlinedInput-root {
+        &:hover {
+            & .MuiOutlinedInput-notchedOutline {
+                border: 1px solid #0000003b;
+                border-right: none;
+            }
+        }
+    }
+    & .Mui-focused {
+        & .MuiOutlinedInput-notchedOutline {
+            border: 1px solid #0000003b !important;
+            border-right: none !important;
+        }
+    }
+`;
+export const StyledSelect = styled(Select)`
+    .MuiOutlinedInput-notchedOutline {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    &:hover {
+        .MuiOutlinedInput-notchedOutline {
+            border: 1px solid #0000003b !important;
+            border-left: none !important;
+        }
+    }
+
+    &.Mui-focused {
+        & .MuiOutlinedInput-notchedOutline {
+            border: 1px solid #0000003b !important;
+            border-left: none !important;
+        }
+    }
 `;
