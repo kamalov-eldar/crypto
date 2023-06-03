@@ -19,7 +19,7 @@ export const TableCrypto: FC = observer(() => {
   useEffect(() => {
     CurrenciesStore.fetchCoins();
     //setInterval(() => CurrenciesStore.fetchCoins(), 60000);
-  }, [])
+  }, []);
 
   const coins = CurrenciesStore.items
   const diffObj = CurrenciesStore.diffObj

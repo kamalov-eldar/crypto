@@ -1,27 +1,31 @@
 import { TCoin, TCoinDiff } from '../types';
-import { action, computed, makeAutoObservable, observable } from 'mobx';
+import { action, computed, makeAutoObservable, makeObservable, observable } from 'mobx';
 import axios, { isCancel, AxiosError } from 'axios';
 
 class CurrenciesStore {
-    // @observable private
+    //@observable private
     items: TCoin[] = [];
+
     diffObj: TCoinDiff = {};
 
     constructor() {
-        makeAutoObservable(this);
+        //makeAutoObservable(this);
+        makeObservable(this, {
+            items: observable,
+            diffObj: observable,
+        });
     }
-
-    /* @computed
-    get getItems() {
-        return this.items;
-    } */
 
     /*  @action
     setItems = (items: TCoin[]): void => {
         this.items = items;
     }; */
+
     ///@action
 
+
+    //@computed
+    
     setItems = (items: TCoin[]): void => {
         this.diffObj =
             this.diffPriceCoins(this.items, items).length === 0
@@ -35,6 +39,7 @@ class CurrenciesStore {
                   }, {});
         this.items = items;
     };
+
     fetchCoins() {
         axios.get(`https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD`).then(({ data }) => {
             const coins: TCoin[] = data.Data.map((coin: any) => {
