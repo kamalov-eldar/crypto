@@ -15,19 +15,10 @@ interface TableCryptoProps {
     diffObj: TCoinDiff;
 }
 
-export const TableCrypto: FC<TableCryptoProps> = observer(({ coins, diffObj }) => {
-    // console.log('TableCrypto: ');
+export const TableCrypto: FC = observer(({}) => {
+    console.log('TableCrypto: ');
     const { currenciesStore } = useStores();
-   // const { getCoins, data, coins, diffObj } = currenciesStore;
-   // console.log('coins: ', coins);
-
-    useEffect(() => {
-        // CurrenciesStore.fetchCoins();
-        // setInterval(() => getCoins, 6000);
-    }, []);
-    //setInterval(() => getCoins, 6000);
-    // const coins = CurrenciesStore.items;
-    // const diffObj = CurrenciesStore.diffObj;
+    const { items: coins, diffObj } = currenciesStore;
 
     return (
         <TableContainer component={Paper} elevation={3}>

@@ -7,35 +7,36 @@ import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 class CurrenciesStore {
     data?: IPromiseBasedObservable<TCoin[]>;
 
-    coins: TCoin[] = [];
+    items: TCoin[] = [];
 
     diffObj: TCoinDiff = {};
 
     constructor() {
-        makeAutoObservable(this);
-        /*  makeObservable(this, {
-            coins: observable,
+        // makeAutoObservable(this);
+        makeObservable(this, {
+            items: observable,
             diffObj: observable,
-        }); */
+        });
     }
 
-    setItems = (newCoinsArr: TCoin[]): void => {
-        const oldCoinsArr = this.coins;
+    setItems = (items: TCoin[]): void => {
         this.diffObj =
-            this.diffPriceCoins(oldCoinsArr, newCoinsArr).length === 0
+            this.diffPriceCoins(this.items, items).length === 0
                 ? (this.diffObj = this.diffObj)
-                : this.diffPriceCoins(oldCoinsArr, newCoinsArr).reduce((initObj: TCoinDiff, obj: TCoin) => {
-                      const newCoin: TCoin = newCoinsArr.find((item) => item.name === obj.name) || obj;
-                      const oldCoin: TCoin = oldCoinsArr.find((itemObj) => itemObj.name === newCoin.name) || newCoin;
-                      const color: string = newCoin.price === oldCoin.price ? '' : newCoin.price > oldCoin.price ? '#3d9400' : '#A11B0A';
-                      initObj[newCoin.name] = color;
+                : this.diffPriceCoins(this.items, items).reduce((initObj: TCoinDiff, obj: TCoin) => {
+                      const newObj: TCoin = items.find((item: { name: string }) => item.name === obj.name) || obj;
+                      const oldObj: TCoin = this.items.find((itemObj) => itemObj.name === newObj.name) || newObj;
+                      const color: string = newObj.price === oldObj.price ? '' : newObj.price > oldObj.price ? '#3d9400' : '#A11B0A';
+                      initObj[newObj.name] = color;
                       return initObj;
                   }, {});
-        this.coins = newCoinsArr;
+        this.items = items as TCoin[];
     };
-    /*
-    fetchCoins() {
+
+    /*  fetchCoins() {
         axios.get(`https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD`).then(({ data }) => {
+            console.log('fetchCoins: ');
+
             const coins: TCoin[] = data.Data.map((coin: any) => {
                 //console.log('coin: ', coin);
                 const obj: TCoin = {
@@ -48,7 +49,7 @@ class CurrenciesStore {
                 };
                 return obj;
             });
-            this.setItems(coins);
+            // this.setItems(coins);
         });
     } */
 
@@ -59,13 +60,23 @@ class CurrenciesStore {
     getCoins = () => {
         console.log('getCoins: ');
         // this.setItems(await fetchCoins());
-        this.setItems(
+        /*  this.setItems(
             fromPromise(fetchCoins()).case({
-                fulfilled: (data) => data,
+                fulfilled: (data) => {
+                    console.log('data: ', data);
+                    return data;
+                },
             }),
-        );
+        ); */
+        // this.fetchCoins();
         this.data = fromPromise(fetchCoins());
-        //  this.setItems(this.data.value as TCoin[]);
+        this.data.then((data) => {
+            this.setItems(data);
+            // return data;
+        });
+
+        // const coins: TCoin[] = (await this.data.then((data) => data)) as unknown as TCoin[];
+        //this.setItems(this.data?.value as unknown as TCoin[]);
     };
 }
 

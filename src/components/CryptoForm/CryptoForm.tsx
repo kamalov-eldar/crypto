@@ -12,13 +12,16 @@ interface CryptoFormProps {
     coins: TCoin[];
 }
 
-export const CryptoForm: FC<CryptoFormProps> = observer(({ coins }) => {
+export const CryptoForm: FC = observer(({}) => {
+    console.log('CryptoForm: ');
     const [value1, setValue1] = useState<number>(0);
     const [value2, setValue2] = useState<number>(0);
     const [openSelect1, setOpenSelect1] = useState<boolean>(false);
     const [openSelect2, setOpenSelect2] = useState<boolean>(false);
 
     const { converterStore } = useStores();
+    const { currenciesStore } = useStores();
+    const { items: coins } = currenciesStore;
 
     const handleSelectCoin1 = (e: SelectChangeEvent<unknown>) => {
         const selectName = e.target.value;
@@ -112,7 +115,6 @@ export const CryptoForm: FC<CryptoFormProps> = observer(({ coins }) => {
             <StyledInputBox open={openSelect1}>
                 <FormControl sx={{ width: '260px', marginRight: '-1px' }}>
                     <StyledTextField
-                        //variant="standard"
                         className='StyledTextField'
                         variant='outlined'
                         type='number'
@@ -125,9 +127,6 @@ export const CryptoForm: FC<CryptoFormProps> = observer(({ coins }) => {
                                 value: Number(e.target.value),
                             })
                         }
-                        /* InputLabelProps={{
-            shrink: !!value1,
-          }} */
                     />
                 </FormControl>
                 <Divider orientation='vertical' flexItem sx={{ margin: '10px 0' }} />
@@ -171,9 +170,6 @@ export const CryptoForm: FC<CryptoFormProps> = observer(({ coins }) => {
                                 value: Number(e.target.value),
                             })
                         }
-                        /*  InputLabelProps={{
-             shrink: !!value2,
-           }} */
                     />
                 </FormControl>
                 <Divider orientation='vertical' flexItem sx={{ margin: '10px 0' }} />
