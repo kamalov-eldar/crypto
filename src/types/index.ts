@@ -7,6 +7,11 @@ export type TCoin = {
     volume24hour: string;
 };
 
+export interface CoinsResponse {
+    Data: TCoin[];
+    Message: 'Success';
+}
+
 export type TCoinDiff = {
     [key: string]: string;
 };

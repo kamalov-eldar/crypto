@@ -4,14 +4,11 @@ import './index.css';
 import App from './App';
 import { Provider } from 'mobx-react';
 
-import stroes from "./stores";
+import stores from './stores/root-store';
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <Provider {...stroes}>
-    <App />
-  </Provider>
+    <Provider {...stores}>
+        <App />
+    </Provider>,
 );
-

@@ -1,45 +1,39 @@
-import { TCoin, TCoinDiff } from '../types';
-import { action, computed, makeAutoObservable, makeObservable, observable } from 'mobx';
+import { CoinsResponse, TCoin, TCoinDiff } from '../types';
+import { makeAutoObservable, makeObservable, observable } from 'mobx';
 import axios, { isCancel, AxiosError } from 'axios';
+import { fetchCoins } from '../api/api';
+import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 
 class CurrenciesStore {
-    //@observable private
-    items: TCoin[] = [];
+    data?: IPromiseBasedObservable<TCoin[]>;
+
+    coins: TCoin[] = [];
 
     diffObj: TCoinDiff = {};
 
     constructor() {
         //makeAutoObservable(this);
         makeObservable(this, {
-            items: observable,
+            coins: observable,
             diffObj: observable,
         });
     }
 
-    /*  @action
-    setItems = (items: TCoin[]): void => {
-        this.items = items;
-    }; */
-
-    ///@action
-
-
-    //@computed
-    
-    setItems = (items: TCoin[]): void => {
+    setItems = (newCoinsArr: TCoin[]): void => {
+        const oldCoinsArr = this.coins;
         this.diffObj =
-            this.diffPriceCoins(this.items, items).length === 0
+            this.diffPriceCoins(oldCoinsArr, newCoinsArr).length === 0
                 ? (this.diffObj = this.diffObj)
-                : this.diffPriceCoins(this.items, items).reduce((initObj: TCoinDiff, obj: TCoin) => {
-                      const newObj: TCoin = items.find((item) => item.name === obj.name) || obj;
-                      const oldObj: TCoin = this.items.find((itemObj) => itemObj.name === newObj.name) || newObj;
-                      const color: string = newObj.price === oldObj.price ? '' : newObj.price > oldObj.price ? '#3d9400' : '#A11B0A';
-                      initObj[newObj.name] = color;
+                : this.diffPriceCoins(oldCoinsArr, newCoinsArr).reduce((initObj: TCoinDiff, obj: TCoin) => {
+                      const newCoin: TCoin = newCoinsArr.find((item) => item.name === obj.name) || obj;
+                      const oldCoin: TCoin = oldCoinsArr.find((itemObj) => itemObj.name === newCoin.name) || newCoin;
+                      const color: string = newCoin.price === oldCoin.price ? '' : newCoin.price > oldCoin.price ? '#3d9400' : '#A11B0A';
+                      initObj[newCoin.name] = color;
                       return initObj;
                   }, {});
-        this.items = items;
+        this.coins = newCoinsArr;
     };
-
+    /*
     fetchCoins() {
         axios.get(`https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD`).then(({ data }) => {
             const coins: TCoin[] = data.Data.map((coin: any) => {
@@ -55,14 +49,73 @@ class CurrenciesStore {
                 return obj;
             });
             this.setItems(coins);
-            // this.items = coins;
         });
-    }
+    } */
 
     diffPriceCoins(arr1: TCoin[], arr2: TCoin[]) {
         return arr1.filter((item, index) => item.price !== arr2[index].price);
     }
+
+    getCoins = () => {
+        // this.setItems(await fetchCoins());
+        this.setItems(
+            fromPromise(fetchCoins()).case({
+                fulfilled: (data) => data,
+            }),
+        );
+        this.data = fromPromise(fetchCoins());
+        //  this.setItems(this.data.value as TCoin[]);
+
+        // console.log('this.data: ', this.data);
+        /*  this.data.case({
+            fulfilled: (fetchData) => {
+                this.setItems(
+                    fetchData.Data.map((coin: any) => {
+                        const obj: TCoin = {
+                            id: coin.CoinInfo.Id,
+                            name: coin.CoinInfo.Name,
+                            fullName: coin.CoinInfo.FullName,
+                            imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
+                            price: coin.DISPLAY.USD.PRICE,
+                            volume24hour: coin.DISPLAY.USD.VOLUME24HOUR,
+                        };
+                        return obj;
+                    }),
+                );
+            },
+        }); */
+        /*  then((data) => {
+            return data.Data.map((coin: any) => {
+                const obj: TCoin = {
+                    id: coin.CoinInfo.Id,
+                    name: coin.CoinInfo.Name,
+                    fullName: coin.CoinInfo.FullName,
+                    imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
+                    price: coin.DISPLAY.USD.PRICE,
+                    volume24hour: coin.DISPLAY.USD.VOLUME24HOUR,
+                };
+                return obj;
+            });
+        }); */
+        /* .case({
+                fulfilled: (data) => {
+                    console.log('data: ', data);
+                      return data.map((coin: any) => {
+                    const obj: TCoin = {
+                        id: coin.CoinInfo.Id,
+                        name: coin.CoinInfo.Name,
+                        fullName: coin.CoinInfo.FullName,
+                        imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
+                        price: coin.DISPLAY.USD.PRICE,
+                        volume24hour: coin.DISPLAY.USD.VOLUME24HOUR,
+                    };
+                    return obj;
+                });
+                    return data;
+                },
+            }); */
+    };
 }
 
 //export default CurrenciesStore;
-export default new CurrenciesStore();
+export const currenciesStore = new CurrenciesStore();
