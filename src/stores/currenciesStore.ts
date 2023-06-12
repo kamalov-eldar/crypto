@@ -12,11 +12,11 @@ class CurrenciesStore {
     diffObj: TCoinDiff = {};
 
     constructor() {
-        //makeAutoObservable(this);
-        makeObservable(this, {
+        makeAutoObservable(this);
+        /*  makeObservable(this, {
             coins: observable,
             diffObj: observable,
-        });
+        }); */
     }
 
     setItems = (newCoinsArr: TCoin[]): void => {
@@ -57,6 +57,7 @@ class CurrenciesStore {
     }
 
     getCoins = () => {
+        console.log('getCoins: ');
         // this.setItems(await fetchCoins());
         this.setItems(
             fromPromise(fetchCoins()).case({
@@ -65,55 +66,6 @@ class CurrenciesStore {
         );
         this.data = fromPromise(fetchCoins());
         //  this.setItems(this.data.value as TCoin[]);
-
-        // console.log('this.data: ', this.data);
-        /*  this.data.case({
-            fulfilled: (fetchData) => {
-                this.setItems(
-                    fetchData.Data.map((coin: any) => {
-                        const obj: TCoin = {
-                            id: coin.CoinInfo.Id,
-                            name: coin.CoinInfo.Name,
-                            fullName: coin.CoinInfo.FullName,
-                            imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
-                            price: coin.DISPLAY.USD.PRICE,
-                            volume24hour: coin.DISPLAY.USD.VOLUME24HOUR,
-                        };
-                        return obj;
-                    }),
-                );
-            },
-        }); */
-        /*  then((data) => {
-            return data.Data.map((coin: any) => {
-                const obj: TCoin = {
-                    id: coin.CoinInfo.Id,
-                    name: coin.CoinInfo.Name,
-                    fullName: coin.CoinInfo.FullName,
-                    imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
-                    price: coin.DISPLAY.USD.PRICE,
-                    volume24hour: coin.DISPLAY.USD.VOLUME24HOUR,
-                };
-                return obj;
-            });
-        }); */
-        /* .case({
-                fulfilled: (data) => {
-                    console.log('data: ', data);
-                      return data.map((coin: any) => {
-                    const obj: TCoin = {
-                        id: coin.CoinInfo.Id,
-                        name: coin.CoinInfo.Name,
-                        fullName: coin.CoinInfo.FullName,
-                        imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
-                        price: coin.DISPLAY.USD.PRICE,
-                        volume24hour: coin.DISPLAY.USD.VOLUME24HOUR,
-                    };
-                    return obj;
-                });
-                    return data;
-                },
-            }); */
     };
 }
 

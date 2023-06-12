@@ -25,8 +25,21 @@ function App() {
     const { getCoins, coins, diffObj, data } = currenciesStore;
 
     useEffect(() => {
-        getCoins();
-        //setInterval(() => CurrenciesStore.fetchCoins(), 60000);
+        if (currenciesStore) {
+            getCoins();
+            /* setInterval(() => {
+                getCoins();
+            }, 6000); */
+        }
+        // setInterval(() => getCoins(), 6000);
+        // setTimeout(() => getCoins(), 2000);
+    }, []);
+
+    useEffect(() => {
+        setInterval(() => {
+            console.log('setInterval');
+            getCoins();
+        }, 6000);
     }, []);
 
     // Без этого error TS
@@ -36,7 +49,7 @@ function App() {
 
     return (
         <div className='App'>
-            {data.case({
+            {data?.case({
                 pending: () => (
                     <div className='loader'>
                         <span className='loader__text'>Загрузка...</span>

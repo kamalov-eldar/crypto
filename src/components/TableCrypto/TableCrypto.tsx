@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { TCoin, TCoinDiff } from '../../types';
 import { observer } from 'mobx-react-lite';
+import { useStores } from '../../root-store-context';
 
 interface TableCryptoProps {
     coins: TCoin[];
@@ -16,6 +17,17 @@ interface TableCryptoProps {
 
 export const TableCrypto: FC<TableCryptoProps> = observer(({ coins, diffObj }) => {
     // console.log('TableCrypto: ');
+    const { currenciesStore } = useStores();
+   // const { getCoins, data, coins, diffObj } = currenciesStore;
+   // console.log('coins: ', coins);
+
+    useEffect(() => {
+        // CurrenciesStore.fetchCoins();
+        // setInterval(() => getCoins, 6000);
+    }, []);
+    //setInterval(() => getCoins, 6000);
+    // const coins = CurrenciesStore.items;
+    // const diffObj = CurrenciesStore.diffObj;
 
     return (
         <TableContainer component={Paper} elevation={3}>
