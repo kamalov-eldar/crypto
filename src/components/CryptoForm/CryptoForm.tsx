@@ -3,10 +3,10 @@ import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { FC, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { converterStore } from '../../stores/converterStore';
 import { StyledInputBox, StyledTextField } from './styles';
 import Divider from '@mui/material/Divider';
 import { TCoin } from '../../types';
+import { useStores } from '../../root-store-context';
 
 interface CryptoFormProps {
     coins: TCoin[];
@@ -17,6 +17,8 @@ export const CryptoForm: FC<CryptoFormProps> = observer(({ coins }) => {
     const [value2, setValue2] = useState<number>(0);
     const [openSelect1, setOpenSelect1] = useState<boolean>(false);
     const [openSelect2, setOpenSelect2] = useState<boolean>(false);
+
+    const { converterStore } = useStores();
 
     const handleSelectCoin1 = (e: SelectChangeEvent<unknown>) => {
         const selectName = e.target.value;

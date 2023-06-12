@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Container, Paper, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { TCoin } from './types';
 import { TableCrypto } from './components/TableCrypto/TableCrypto';
 import { CryptoForm } from './components/CryptoForm/CryptoForm';
-import { currenciesStore } from './stores/currenciesStore';
 
 import './App.css';
 import { observer } from 'mobx-react-lite';
 import { setInterval } from 'timers';
+import { useStores } from './root-store-context';
 
 const Item = styled(Paper)(({ theme }) => ({
     //backgroundColor: theme.palette.mode === 'light' ? '#cfe8fc' : '#fff',
@@ -22,6 +21,7 @@ const Item = styled(Paper)(({ theme }) => ({
 function App() {
     console.log('App: ');
 
+    const { currenciesStore } = useStores();
     const { getCoins, coins, diffObj, data } = currenciesStore;
 
     useEffect(() => {
@@ -29,7 +29,7 @@ function App() {
         //setInterval(() => CurrenciesStore.fetchCoins(), 60000);
     }, []);
 
-    // Без этого ругается TS
+    // Без этого error TS
     if (!data) {
         return null;
     }

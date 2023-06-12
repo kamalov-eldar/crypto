@@ -16,17 +16,6 @@ interface TableCryptoProps {
 
 export const TableCrypto: FC<TableCryptoProps> = observer(({ coins, diffObj }) => {
     // console.log('TableCrypto: ');
-    //const { getCoins, coins, diffObj, data } = CurrenciesStore;
-
-    useEffect(() => {
-        // getCoins();
-        //setInterval(() => CurrenciesStore.fetchCoins(), 60000);
-    }, []);
-
-    // Без этого ругается TS
-    /* if (!data) {
-        return null;
-    } */
 
     return (
         <TableContainer component={Paper} elevation={3}>

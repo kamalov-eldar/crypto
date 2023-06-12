@@ -1,5 +1,3 @@
-import { injectStores } from '@mobx-devtools/tools';
-
 import { converterStore } from './converterStore';
 import { currenciesStore } from './currenciesStore';
 
