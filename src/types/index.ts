@@ -5,13 +5,20 @@ export type TCoin = {
     imageUrl: string;
     price: string;
     volume24hour: string;
+    changeday: string;
 };
 
-export interface CoinsResponse {
+export interface ICoinsResponse {
     Data: TCoin[];
     Message: 'Success';
 }
 
-export type TCoinDiff = {
+export type TChangeColor = {
     [key: string]: string;
 };
+
+export interface IMessage {
+    [key: string]: {
+        [key: string]: number;
+    };
+}

@@ -3,9 +3,9 @@ import { Container, Paper, Grid } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { observer } from 'mobx-react-lite';
-import { useStores } from '../../../root-store-context';
-import { TableCrypto } from '../TableCrypto';
-import { CryptoForm } from '../../CryptoForm/CryptoForm';
+import { useStores } from '../../root-store-context';
+import { TableCrypto } from '../TableCrypto/TableCrypto';
+import { CryptoForm } from '../CryptoForm/CryptoForm';
 
 const Item = styled(Paper)(({ theme }) => ({
     //backgroundColor: theme.palette.mode === 'light' ? '#cfe8fc' : '#fff',
@@ -17,17 +17,27 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function Wrapper() {
-    console.log('Wrapper: ');
+    // console.log('Wrapper: ');
 
     const { currenciesStore } = useStores();
-    const { getCoins, items: coins, diffObj, data } = currenciesStore;
+    const { getCoins, data, getTickCoins, getCoinsName, coins } = currenciesStore;
 
     useEffect(() => {
         getCoins();
-        setInterval(() => {
+        getCoinsName();
+        //getTickCoins();
+        // openWS();
+        /*  setInterval(() => {
             console.log('setInterval');
             getCoins();
-        }, 30000);
+        }, 30000); */
+    }, []);
+
+    useEffect(() => {
+        setInterval(() => {
+            console.log('setInterval');
+            getTickCoins();
+        }, 20000);
     }, []);
 
     // Без этого error TS
@@ -36,7 +46,7 @@ function Wrapper() {
     }
 
     return (
-        <div className='App'>
+        <>
             {data?.case({
                 pending: () => (
                     <div className='loader'>
@@ -44,10 +54,10 @@ function Wrapper() {
                     </div>
                 ),
                 rejected: () => <div>Error</div>,
-                fulfilled: (data) => (
-                    <Container sx={{ padding: '40px 0' }} maxWidth='lg'>
-                        <Grid container spacing={2}>
-                            <Grid item xs={6} md={8}>
+                fulfilled: () => (
+                    <Container sx={{ padding: '30px 0' }} maxWidth='lg'>
+                        <Grid container spacing={2} sx={{ flexWrap: 'nowrap' }}>
+                            <Grid item xs={6} md={8} sx={{ minWidth: '720px' }}>
                                 <TableCrypto />
                             </Grid>
                             <Grid item xs={6} md={4}>
@@ -59,7 +69,7 @@ function Wrapper() {
                     </Container>
                 ),
             })}
-        </div>
+        </>
     );
 }
 

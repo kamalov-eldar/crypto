@@ -1,4 +1,4 @@
-import { Stack, MenuItem, FormControl, InputLabel, Box } from '@mui/material';
+import { Stack, MenuItem, FormControl, InputLabel, Box, Tooltip } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { FC, useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import { TCoin } from '../../types';
 import { useStores } from '../../root-store-context';
 
 interface CryptoFormProps {
-    coins: TCoin[];
+    coins: PromiseLike<TCoin[]>;
 }
 
 export const CryptoForm: FC = observer(({}) => {
@@ -21,11 +21,11 @@ export const CryptoForm: FC = observer(({}) => {
 
     const { converterStore } = useStores();
     const { currenciesStore } = useStores();
-    const { items: coins } = currenciesStore;
+    const { coins } = currenciesStore;
+    console.log('coins: ', coins);
 
     const handleSelectCoin1 = (e: SelectChangeEvent<unknown>) => {
         const selectName = e.target.value;
-        const name = e.target.name;
 
         const findCoinSelect1 = coins.find((item) => item.name === selectName);
         const findCoinSelect2 = coins.find((item) => item.name === converterStore.selectCoin2.name);
@@ -43,9 +43,9 @@ export const CryptoForm: FC = observer(({}) => {
 
         converterStore.setVolume1();
     };
+
     const handleSelectCoin2 = (e: SelectChangeEvent<unknown>) => {
         const selectCoinName = e.target.value;
-        const name = e.target.name;
 
         const findCoinSelect2 = coins.find((item) => item.name === selectCoinName);
         const findCoinSelect1 = coins.find((item) => item.name === converterStore.selectCoin1.name);
@@ -113,24 +113,26 @@ export const CryptoForm: FC = observer(({}) => {
     return (
         <Stack direction={'column'} spacing={2}>
             <StyledInputBox open={openSelect1}>
-                <FormControl sx={{ width: '260px', marginRight: '-1px' }}>
-                    <StyledTextField
-                        className='StyledTextField'
-                        variant='outlined'
-                        type='number'
-                        name='Volume1'
-                        label={'Количество'}
-                        value={value1 || ''}
-                        onChange={(e) =>
-                            handleChangeQuantity({
-                                name: e.target.name,
-                                value: Number(e.target.value),
-                            })
-                        }
-                    />
+                <FormControl sx={{ minWidth: '190px', width: '100%', marginRight: '-1px' }}>
+                    <Tooltip title={value1}>
+                        <StyledTextField
+                            className='StyledTextField'
+                            variant='outlined'
+                            type='number'
+                            name='Volume1'
+                            label={'Количество'}
+                            value={value1 || ''}
+                            onChange={(e) =>
+                                handleChangeQuantity({
+                                    name: e.target.name,
+                                    value: Number(e.target.value),
+                                })
+                            }
+                        />
+                    </Tooltip>
                 </FormControl>
                 <Divider orientation='vertical' flexItem sx={{ margin: '10px 0' }} />
-                <FormControl>
+                <FormControl sx={{ minWidth: '100px' }}>
                     <InputLabel>Валюта</InputLabel>
                     <Select
                         className='Select'
@@ -138,7 +140,6 @@ export const CryptoForm: FC = observer(({}) => {
                         name='Volume1'
                         label={'Валюта'}
                         sx={{
-                            width: '100px',
                             '& .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input': {
                                 overflow: 'inherit',
                             },
@@ -147,33 +148,37 @@ export const CryptoForm: FC = observer(({}) => {
                         onOpen={handleSelectOpen1}
                         onClose={handleSelectClose1}
                         onChange={(e) => handleSelectCoin1(e)}>
-                        {coins.map((coin) => (
-                            <MenuItem key={coin.id} value={coin.name}>
-                                {coin.name}
-                            </MenuItem>
-                        ))}
+                        {coins.map((coin) => {
+                            return (
+                                <MenuItem key={coin.id} value={coin.name}>
+                                    {coin.name}
+                                </MenuItem>
+                            );
+                        })}
                     </Select>
                 </FormControl>
             </StyledInputBox>
-            <StyledInputBox open={openSelect2} sx={{ minWidth: '360px' }}>
-                <FormControl sx={{ width: '260px', marginRight: '-1px' }}>
-                    <StyledTextField
-                        className='StyledTextField'
-                        variant='outlined'
-                        type='number'
-                        name='Volume2'
-                        label='Количество'
-                        value={value2 || ''}
-                        onChange={(e) =>
-                            handleChangeQuantity({
-                                name: e.target.name,
-                                value: Number(e.target.value),
-                            })
-                        }
-                    />
+            <StyledInputBox open={openSelect2}>
+                <FormControl sx={{ minWidth: '190px', width: '100%', marginRight: '-1px' }}>
+                    <Tooltip title={value2}>
+                        <StyledTextField
+                            className='StyledTextField'
+                            variant='outlined'
+                            type='number'
+                            name='Volume2'
+                            label='Количество'
+                            value={value2 || ''}
+                            onChange={(e) =>
+                                handleChangeQuantity({
+                                    name: e.target.name,
+                                    value: Number(e.target.value),
+                                })
+                            }
+                        />
+                    </Tooltip>
                 </FormControl>
                 <Divider orientation='vertical' flexItem sx={{ margin: '10px 0' }} />
-                <FormControl>
+                <FormControl sx={{ minWidth: '100px' }}>
                     <InputLabel>Валюта</InputLabel>
                     <Select
                         className='Select'
@@ -181,7 +186,6 @@ export const CryptoForm: FC = observer(({}) => {
                         value={converterStore.selectCoin2.name || ''}
                         label={'Валюта'}
                         sx={{
-                            width: '100px',
                             '& .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input': {
                                 overflow: 'inherit',
                             },
