@@ -41,6 +41,7 @@ function Wrapper() {
 
     return (
         <>
+            <div>Wrapper</div>
             {data?.case({
                 pending: () => (
                     <div className='loader'>
