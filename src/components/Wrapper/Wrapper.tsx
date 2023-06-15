@@ -36,7 +36,7 @@ function Wrapper() {
     useEffect(() => {
         setInterval(() => {
             console.log('setInterval');
-            getTickCoins();
+            // getTickCoins();
         }, 20000);
     }, []);
 
@@ -61,7 +61,7 @@ function Wrapper() {
                                 <TableCrypto />
                             </Grid>
                             <Grid item xs={6} md={4}>
-                                <Item elevation={3}>
+                                <Item sx={{ minWidth: 'auto' }} elevation={3}>
                                     <CryptoForm />
                                 </Item>
                             </Grid>

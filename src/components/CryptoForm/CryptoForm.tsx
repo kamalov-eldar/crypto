@@ -1,5 +1,4 @@
 import { Stack, MenuItem, FormControl, InputLabel, Box, Tooltip } from '@mui/material';
-import TextField from '@mui/material/TextField';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { FC, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
