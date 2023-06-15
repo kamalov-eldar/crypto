@@ -23,14 +23,14 @@ function Wrapper() {
     const { getCoins, data, getTickCoins } = currenciesStore;
 
     useEffect(() => {
-        getCoins();
+       // getCoins();
         //getTickCoins();
     }, []);
 
     useEffect(() => {
         setInterval(() => {
             console.log('setInterval');
-            getTickCoins();
+          //  getTickCoins();
         }, 20000);
     }, []);
 
