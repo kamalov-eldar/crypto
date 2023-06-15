@@ -1,6 +1,5 @@
 import { TCoin } from '../types';
-import { observable } from 'mobx';
-import { action, computed, makeAutoObservable } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 
 class ConverterStore {
     selectCoin1: TCoin = {} as TCoin;
@@ -32,11 +31,9 @@ class ConverterStore {
 
     setVolume1() {
         if (JSON.stringify(this.selectCoin1.price) && JSON.stringify(this.selectCoin2.price)) {
-            const priceToNumber1 = Number(JSON.stringify(this.selectCoin1.price).slice(3).slice(0, -1).replace(/,/g, ''));
-            const priceToNumber2 = Number(JSON.stringify(this.selectCoin2.price).slice(3).slice(0, -1).replace(/,/g, ''));
 
-            const summ1 = priceToNumber1 * (this.quantity1 || 1);
-            const summ2 = priceToNumber2 * this.quantity2;
+            const summ1 = this.selectCoin1.price * (this.quantity1 || 1);
+            const summ2 = this.selectCoin2.price * this.quantity2;
             // console.log('summ2: ', summ2);
             // console.log('summ1: ', summ1);
 
@@ -48,11 +45,9 @@ class ConverterStore {
 
     setVolume2() {
         if (JSON.stringify(this.selectCoin1.price) && JSON.stringify(this.selectCoin2.price)) {
-            const priceToNumber1 = Number(JSON.stringify(this.selectCoin1.price).slice(3).slice(0, -1).replace(/,/g, ''));
-            const priceToNumber2 = Number(JSON.stringify(this.selectCoin2.price).slice(3).slice(0, -1).replace(/,/g, ''));
 
-            const summ1 = priceToNumber1 * this.quantity1;
-            const summ2 = priceToNumber2 * (this.quantity2 || 1);
+            const summ1 = this.selectCoin1.price * this.quantity1;
+            const summ2 = this.selectCoin2.price * (this.quantity2 || 1);
             // console.log('summ2: ', summ2);
             // console.log('summ1: ', summ1);
 

@@ -17,7 +17,7 @@ interface TableCryptoProps {
 }
 
 export const TableCrypto: FC = observer(({}) => {
-    console.log('TableCrypto: ');
+   // console.log('TableCrypto: ');
     const { currenciesStore } = useStores();
     const { coins, changeСolor, message, data } = currenciesStore;
 

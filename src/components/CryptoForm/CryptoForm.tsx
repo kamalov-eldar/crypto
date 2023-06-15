@@ -12,7 +12,7 @@ interface CryptoFormProps {
 }
 
 export const CryptoForm: FC = observer(({}) => {
-    console.log('CryptoForm: ');
+   // console.log('CryptoForm: ');
     const [value1, setValue1] = useState<number>(0);
     const [value2, setValue2] = useState<number>(0);
     const [openSelect1, setOpenSelect1] = useState<boolean>(false);
