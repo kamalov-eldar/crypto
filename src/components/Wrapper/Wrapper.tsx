@@ -23,7 +23,7 @@ function Wrapper() {
     const { getCoins, data, getTickCoins } = currenciesStore;
 
     useEffect(() => {
-        // getCoins();
+        //getCoins();
         //getTickCoins();
     }, []);
 
@@ -41,7 +41,6 @@ function Wrapper() {
 
     return (
         <>
-            <div>Wrapper</div>
             {data?.case({
                 pending: () => (
                     <div className='loader'>

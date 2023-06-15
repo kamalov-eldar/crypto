@@ -11,6 +11,7 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
     <RootStoreContext.Provider value={new RootStore()}>
         <StyledEngineProvider injectFirst>
+            <div>Wrapper</div>
             <App />
         </StyledEngineProvider>
     </RootStoreContext.Provider>,
