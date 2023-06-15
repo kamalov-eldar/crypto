@@ -21,7 +21,6 @@ export const CryptoForm: FC = observer(({}) => {
     const { converterStore } = useStores();
     const { currenciesStore } = useStores();
     const { coins } = currenciesStore;
-    console.log('coins: ', coins);
 
     const handleSelectCoin1 = (e: SelectChangeEvent<unknown>) => {
         const selectName = e.target.value;

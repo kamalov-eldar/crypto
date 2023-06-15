@@ -9,20 +9,24 @@ export const fetchCoins = async () =>
                 name: coin.CoinInfo.Name,
                 fullName: coin.CoinInfo.FullName,
                 imageUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`,
-                price: coin.DISPLAY.USD.PRICE,
+                price: coin.RAW.USD.PRICE,
                 volume24hour: coin.DISPLAY.USD.VOLUME24HOUR,
                 changeday: coin.DISPLAY.USD.CHANGEDAY,
             };
             return obj;
         });
-        return coins;
+        let message: IMessage = {};
+        coins.forEach((coin) => {
+            message[coin.name] = { price: coin.price };
+        });
+        return { coins, message };
     });
 export const fetchTick = async (arrCoinsName: string[]) => {
     const strName = arrCoinsName.join(',');
     return await axios.get(`https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${strName}&tsyms=USD`).then(({ data }) => {
         let message: IMessage = {};
         arrCoinsName.forEach((name) => {
-            message[name] = { ['price']: data.RAW[name]['USD']['PRICE'] };
+            message[name] = { price: data.RAW[name]['USD']['PRICE'] };
         });
         return message;
     });

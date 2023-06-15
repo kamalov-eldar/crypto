@@ -17,27 +17,26 @@ interface TableCryptoProps {
 }
 
 export const TableCrypto: FC = observer(({}) => {
-    // console.log('TableCrypto: ');
+    console.log('TableCrypto: ');
     const { currenciesStore } = useStores();
     const { coins, changeСolor, message, data } = currenciesStore;
-    console.log('message: ', message);
 
     return (
         <TableContainer component={Paper} elevation={3}>
             <Table stickyHeader /* sx={{ minWidth: 850 }} */>
                 <TableHead>
-                    <TableRow>
-                        <StyledTableCell sx={{ width: '10px' }}></StyledTableCell>
-                        <StyledTableCell sx={{ minWidth: '98px' }} align='left'>
+                    <TableRow sx={{ th: { fontSize: '12px', fontWeight: 700 } }}>
+                        <TableCell sx={{ width: '10px' }}></TableCell>
+                        <TableCell sx={{ minWidth: '98px' }} align='left'>
                             Coin
-                        </StyledTableCell>
-                        <StyledTableCell align='center' style={{ width: '200px' }}>
+                        </TableCell>
+                        <TableCell align='center' style={{ width: '200px' }}>
                             Price
-                        </StyledTableCell>
-                        <StyledTableCell sx={{ minWidth: '98px' }} align='left'>
+                        </TableCell>
+                        <TableCell sx={{ minWidth: '98px' }} align='left'>
                             Price Day
-                        </StyledTableCell>
-                        <StyledTableCell align='left'>Change Day</StyledTableCell>
+                        </TableCell>
+                        <TableCell align='left'>Change Day</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -49,19 +48,11 @@ export const TableCrypto: FC = observer(({}) => {
                         ),
                         rejected: () => <TableRow>Error</TableRow>,
                         fulfilled: (data) => {
-                            // console.log('fulfilled: ');
-                            // console.log('data: ', data);
                             return (
                                 <>
-                                    {data.map((coin) => {
+                                    {data.coins.map((coin) => {
                                         return (
-                                            <TableRow
-                                                hover
-                                                key={coin.id}
-                                                sx={{
-                                                    cursor: 'pointer',
-                                                    '&:last-child td, &:last-child th': { border: 0 },
-                                                }}>
+                                            <TableRow hover key={coin.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                                 <StyledTableCell width='max-content' align='center' component='th' scope='row'>
                                                     <Box sx={{ display: 'inline-flex' }}>
                                                         <img style={{ width: '25px', display: 'block' }} src={coin.imageUrl} alt='' />
@@ -78,13 +69,11 @@ export const TableCrypto: FC = observer(({}) => {
                                                 >
                                                     <StyledBoxPrice backgroundColor={changeСolor[coin.name] || '#F5F5F5'}>
                                                         <StyledTypography backgroundColor={changeСolor[coin.name] || '#F5F5F5'}>
-                                                            {message[coin.name]
-                                                                ? '$ ' +
-                                                                  message[coin.name].price.toLocaleString('ru-RU', {
-                                                                     // minimumFractionDigits: 5,
-                                                                      maximumFractionDigits: 5,
-                                                                  })
-                                                                : coin.price}
+                                                            {'$ ' +
+                                                                message[coin.name]?.price.toLocaleString('en-US', {
+                                                                    // minimumFractionDigits: 5,
+                                                                    maximumFractionDigits: 5,
+                                                                })}
                                                         </StyledTypography>
                                                     </StyledBoxPrice>
                                                 </StyledTableCell>

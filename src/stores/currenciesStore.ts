@@ -8,7 +8,7 @@ var apiKey = '68ff6ac52df0cf4d0fd0518b6bb2c3d51cc7ce9014dbc8e43747ac61c8790615';
 
 class CurrenciesStore {
     //data?: IPromiseBasedObservable<TCoin[]>;
-    data = fromPromise<TCoin[]>(fetchCoins());
+    data = fromPromise<{ coins: TCoin[]; message: IMessage }>(fetchCoins());
 
     coins: TCoin[] = [];
 
@@ -32,28 +32,9 @@ class CurrenciesStore {
     getCoins = async () => {
         console.log('getCoins: ');
 
-        this.coins = await this.data.then((data) => data);
-
-        // требует await
-        /*  this.coins = this.data
-            .then(
-                (result) => result.map((coin) => coin),
-                (rejectReason) => {
-                    console.error('fetchResult was rejected, reason: ' + rejectReason);
-                    return rejectReason;
-                },
-            )
-            .then((coins) => coins); */
-
-        /*  this.coins = this.data.case({
-            fulfilled: (data) => {
-                return data;
-            },
-        }); */
-    };
-
-    getCoinsName = async () => {
-        this.arrCoinsName = await this.data.then((data) => data.map((coin) => coin.name));
+        this.coins = await this.data.then((data) => data.coins);
+        this.message = await this.data.then((data) => data.message);
+        this.arrCoinsName = await this.data.then((data) => data.coins.map((coin) => coin.name));
     };
 
     // computed ?
@@ -68,18 +49,6 @@ class CurrenciesStore {
         this.message = newMessage;
     };
 
-    /* get colors(newMessage: IMessage) {
-        console.log('Computing colors ...');
-        let changeСolor: TChangeColor = {};
-        Object.keys(this.message).forEach((coinName) => {
-            const oldPrice = this.message[coinName]['price'];
-            const newPrice = newMessage[coinName]['price'];
-            const color: string = newPrice === oldPrice ? '#F5F5F5' : newPrice > oldPrice ? '#3d9400' : '#A11B0A';
-            this.changeСolor[coinName] = color;
-        });
-        return changeСolor;
-    } */
-
     // action/autoAction
     getTickCoins = () => {
         if (this.arrCoinsName) {
@@ -89,15 +58,6 @@ class CurrenciesStore {
             });
         }
     };
-
-    // не работает
-    /* getTickCoins() {
-        if (this.arrCoinsName) {
-            fetchTick(this.arrCoinsName).then((newMessage) => {
-                this.getColors(newMessage);
-            });
-        }
-    } */
 }
 
 //export default CurrenciesStore;

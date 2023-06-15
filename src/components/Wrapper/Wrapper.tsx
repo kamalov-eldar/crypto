@@ -20,23 +20,17 @@ function Wrapper() {
     // console.log('Wrapper: ');
 
     const { currenciesStore } = useStores();
-    const { getCoins, data, getTickCoins, getCoinsName, coins } = currenciesStore;
+    const { getCoins, data, getTickCoins } = currenciesStore;
 
     useEffect(() => {
         getCoins();
-        getCoinsName();
         //getTickCoins();
-        // openWS();
-        /*  setInterval(() => {
-            console.log('setInterval');
-            getCoins();
-        }, 30000); */
     }, []);
 
     useEffect(() => {
         setInterval(() => {
             console.log('setInterval');
-            // getTickCoins();
+            getTickCoins();
         }, 20000);
     }, []);
 

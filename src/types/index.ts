@@ -3,7 +3,7 @@ export type TCoin = {
     name: string;
     fullName: string;
     imageUrl: string;
-    price: string;
+    price: number;
     volume24hour: string;
     changeday: string;
 };
