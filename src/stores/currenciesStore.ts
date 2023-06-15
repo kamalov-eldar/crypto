@@ -7,8 +7,8 @@ import { IPromiseBasedObservable, fromPromise } from 'mobx-utils';
 var apiKey = '68ff6ac52df0cf4d0fd0518b6bb2c3d51cc7ce9014dbc8e43747ac61c8790615';
 
 class CurrenciesStore {
-    data: IPromiseBasedObservable<{ coins: TCoin[]; message: IMessage }> | undefined;
-    //data = fromPromise<{ coins: TCoin[]; message: IMessage }>(fetchCoins());
+    // data: IPromiseBasedObservable<{ coins: TCoin[]; message: IMessage }> | undefined;
+    data = fromPromise<{ coins: TCoin[]; message: IMessage }>(fetchCoins());
 
     coins: TCoin[] = [];
 
@@ -31,7 +31,6 @@ class CurrenciesStore {
 
     getCoins = async () => {
         console.log('getCoins: ');
-        this.data = fromPromise<{ coins: TCoin[]; message: IMessage }>(fetchCoins());
         this.coins = await this.data.then((data) => data.coins);
         this.message = await this.data.then((data) => data.message);
         this.arrCoinsName = await this.data.then((data) => data.coins.map((coin) => coin.name));
