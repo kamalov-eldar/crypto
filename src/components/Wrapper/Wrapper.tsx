@@ -22,7 +22,7 @@ function Wrapper() {
 
     useEffect(() => {
         setInterval(() => {
-            // getTickCoins();
+            getTickCoins();
         }, 20_000);
     }, []);
 

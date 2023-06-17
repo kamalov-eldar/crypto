@@ -2,7 +2,6 @@ import axios from 'axios';
 import { IMessage, TCoin } from '../types';
 
 export const fetchCoins = axios.get(`https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD`).then(({ data }) => {
-    console.log('fetchCoins: ');
 
     const coins: TCoin[] = data.Data.map((coin: any) => {
         return {
