@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import React from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,20 +6,14 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { TCoin, TChangeColor } from '../../types';
 import { observer } from 'mobx-react-lite';
 import { useStores } from '../../root-store-context';
 import { StyledBoxPrice, StyledTableCell, StyledTypography } from './styles';
 
-interface TableCryptoProps {
-    coins: TCoin[];
-    diffObj: TChangeColor;
-}
 
-export const TableCrypto: FC = observer(({}) => {
-   // console.log('TableCrypto: ');
+export const TableCrypto: React.FC = observer(() => {
     const { currenciesStore } = useStores();
-    const { coins, changeСolor, message, data } = currenciesStore;
+    const { changeСolor, message, data } = currenciesStore;
 
     return (
         <TableContainer component={Paper} elevation={3}>
@@ -50,7 +44,7 @@ export const TableCrypto: FC = observer(({}) => {
                         fulfilled: (data) => {
                             return (
                                 <>
-                                    {data.coins.map((coin) => {
+                                    {data.map((coin) => {
                                         return (
                                             <TableRow hover key={coin.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                                                 <StyledTableCell width='max-content' align='center' component='th' scope='row'>

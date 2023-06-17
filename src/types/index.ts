@@ -18,7 +18,7 @@ export type TChangeColor = {
 };
 
 export interface IMessage {
-    [key: string]: {
-        [key: string]: number;
+    [coinName: string]: {
+        price: number;
     };
 }

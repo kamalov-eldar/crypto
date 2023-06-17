@@ -17,21 +17,13 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function Wrapper() {
-    // console.log('Wrapper: ');
-
     const { currenciesStore } = useStores();
-    const { getCoins, data, getTickCoins } = currenciesStore;
-
-    useEffect(() => {
-        getCoins();
-        //getTickCoins();
-    }, []);
+    const { data, getTickCoins } = currenciesStore;
 
     useEffect(() => {
         setInterval(() => {
-            console.log('setInterval');
-            getTickCoins();
-        }, 20000);
+            // getTickCoins();
+        }, 20_000);
     }, []);
 
     // Без этого error TS

@@ -1,19 +1,77 @@
 import { TCoin } from '../types';
-import { makeAutoObservable } from 'mobx';
+import { RootStore } from './root-store';
+import { action, makeObservable, observable } from 'mobx';
 
-class ConverterStore {
-    selectCoin1: TCoin = {} as TCoin;
-    selectCoin2: TCoin = {} as TCoin;
+export class ConverterStore {
+    rootStore: RootStore;
 
-    quantity1: number = 0;
-    quantity2: number = 0;
+    selectCoin1: TCoin | undefined;
+    selectCoin2: TCoin | undefined;
 
-    volume1: number | null = null;
-    volume2: number | null = null;
+    volume1: number | null = 0;
+    volume2: number | null = 0;
 
-    constructor() {
-        makeAutoObservable(this);
+    constructor({ rootStore }: { rootStore: RootStore }) {
+        this.rootStore = rootStore;
+
+        makeObservable(this, {
+            selectCoin1: observable,
+            selectCoin2: observable,
+            volume1: observable,
+            volume2: observable,
+
+            setVolume: action,
+            setSelectCoin1: action,
+            setSelectCoin2: action,
+            setSelectedCoin1: action,
+            setSelectedCoin2: action,
+            computeVolume1: action,
+            computeVolume2: action,
+        });
     }
+
+    setVolume = (name: 'Volume1' | 'Volume2', value: number) => {
+        if (name === 'Volume1') {
+            this.volume1 = value;
+            this.computeVolume2();
+        }
+
+        if (name === 'Volume2') {
+            this.volume2 = value;
+            this.computeVolume1();
+        }
+    };
+
+    setSelectCoin1 = (selectCoinName: string) => {
+        const coins = this.rootStore.currenciesStore.coins;
+
+        const findCoinSelect1 = coins.find((item) => item.name === selectCoinName);
+        const findCoinSelect2 = coins.find((item) => item.name === this.selectCoin2?.name);
+
+        if (findCoinSelect1) {
+            this.setSelectedCoin1(findCoinSelect1);
+        }
+        if (findCoinSelect2) {
+            this.setSelectedCoin2(findCoinSelect2);
+        }
+
+        this.computeVolume1();
+    };
+
+    setSelectCoin2 = (selectCoinName: string) => {
+        const coins = this.rootStore.currenciesStore.coins;
+
+        const findCoinSelect2 = coins.find((item) => item.name === selectCoinName);
+        const findCoinSelect1 = coins.find((item) => item.name === this.selectCoin1?.name);
+
+        if (findCoinSelect2) {
+            this.setSelectedCoin2(findCoinSelect2);
+        }
+        if (findCoinSelect1) {
+            this.setSelectedCoin1(findCoinSelect1);
+        }
+        this.computeVolume2();
+    };
 
     setSelectedCoin1(coin: TCoin) {
         this.selectCoin1 = coin;
@@ -21,42 +79,20 @@ class ConverterStore {
     setSelectedCoin2(coin: TCoin) {
         this.selectCoin2 = coin;
     }
-    setQuantity1(value: number) {
-        this.quantity1 = value;
-    }
 
-    setQuantity2(value: number) {
-        this.quantity2 = value;
-    }
+    computeVolume1() {
+        if (this.selectCoin1 && this.selectCoin2) {
+            const summ2 = this.selectCoin2.price * (this.volume2 ?? 1);
 
-    setVolume1() {
-        if (JSON.stringify(this.selectCoin1.price) && JSON.stringify(this.selectCoin2.price)) {
-
-            const summ1 = this.selectCoin1.price * (this.quantity1 || 1);
-            const summ2 = this.selectCoin2.price * this.quantity2;
-            // console.log('summ2: ', summ2);
-            // console.log('summ1: ', summ1);
-
-            this.volume1 = summ2 / summ1;
-
-            // console.log('setVolume1: ', { quantity1: this.quantity1, quantity2: this.quantity2, ['this.volume1']: this.volume1, ['this.volume2']: this.volume2, priceToNumber2: priceToNumber2, priceToNumber1: priceToNumber1 });
+            this.volume1 = summ2 / this.selectCoin1.price;
         }
     }
 
-    setVolume2() {
-        if (JSON.stringify(this.selectCoin1.price) && JSON.stringify(this.selectCoin2.price)) {
+    computeVolume2() {
+        if (this.selectCoin1 && this.selectCoin2) {
+            const summ1 = this.selectCoin1.price * (this.volume1 ?? 1);
 
-            const summ1 = this.selectCoin1.price * this.quantity1;
-            const summ2 = this.selectCoin2.price * (this.quantity2 || 1);
-            // console.log('summ2: ', summ2);
-            // console.log('summ1: ', summ1);
-
-            this.volume2 = summ1 / summ2;
-
-            //console.log('setVolume2: ', { quantity1: this.quantity1, quantity2: this.quantity2, ['this.volume1']: this.volume1, ['this.volume2']: this.volume2, priceToNumber2: priceToNumber2, priceToNumber1: priceToNumber1 });
+            this.volume2 = summ1 / this.selectCoin2.price;
         }
     }
 }
-
-export const converterStore = new ConverterStore();
-//export default new ConverterStore();
