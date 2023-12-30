@@ -28,18 +28,15 @@ export class CurrenciesStore {
     }
 
     get coins() {
-        console.log('get-coins: ');
         if (this.data.state === 'fulfilled') return this.data.value;
         return [];
     }
 
     get arrCoinsName() {
-        console.log('arrCoinsName: ');
         return this.coins.map((coin) => coin.name);
     }
 
     get message() {
-        console.log('get-message: ');
         if (this.newMessage) return this.newMessage;
 
         let message: IMessage = {};

@@ -1,6 +1,6 @@
-import { TCoin } from '../types';
-import { RootStore } from './root-store';
-import { action, makeObservable, observable } from 'mobx';
+import { TCoin } from "../types";
+import RootStore from "./root-store";
+import { action, makeObservable, observable } from "mobx";
 
 export class ConverterStore {
     rootStore: RootStore;
@@ -30,13 +30,13 @@ export class ConverterStore {
         });
     }
 
-    setVolume = (name: 'Volume1' | 'Volume2', value: number) => {
-        if (name === 'Volume1') {
+    setVolume = (name: "Volume1" | "Volume2", value: number) => {
+        if (name === "Volume1") {
             this.volume1 = value;
             this.computeVolume2();
         }
 
-        if (name === 'Volume2') {
+        if (name === "Volume2") {
             this.volume2 = value;
             this.computeVolume1();
         }

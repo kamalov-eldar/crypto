@@ -1,7 +1,7 @@
-import { ConverterStore } from './converterStore';
-import { CurrenciesStore } from './currenciesStore';
+import { ConverterStore } from "./converterStore";
+import { CurrenciesStore } from "./currenciesStore";
 
-export class RootStore {
+class RootStore {
     converterStore: ConverterStore;
     currenciesStore: CurrenciesStore;
 
